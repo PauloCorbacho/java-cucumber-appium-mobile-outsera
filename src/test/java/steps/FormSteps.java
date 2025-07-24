@@ -2,6 +2,7 @@ package steps;
 
 import config.AppConfig;
 import io.appium.java_client.android.AndroidDriver;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,9 +20,9 @@ public class FormSteps {
     @Given("I open the form screen")
     public void openFormScreen() throws Exception {
         driver = AppConfig.getDriver();
-        //new MenuPage(driver).selectMenu("Views");
+        new MenuPage(driver).selectMenu("Views");
         new MenuPage(driver).selectMenu("App");
-        //new MenuPage(driver).selectMenu("Light Theme");
+        new MenuPage(driver).selectMenu("Light Theme");
         formPage = new FormPage(driver);
     }
 
@@ -34,5 +35,10 @@ public class FormSteps {
     @Then("I should see confirmation message")
     public void verifyConfirmation() {
         assertTrue(formPage.isConfirmationDisplayed());
+    }
+
+    @And("I submit the form")
+    public void iSubmitTheForm() {
+        formPage.submit();
     }
 }

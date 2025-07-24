@@ -2,6 +2,7 @@ package steps;
 
 import config.AppConfig;
 import io.appium.java_client.android.AndroidDriver;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,5 +28,10 @@ public class NavigationSteps {
     @Then("I should see text {string} on screen")
     public void verifyText(String text) {
         assertTrue(menuPage.isTextDisplayed(text));
+    }
+
+    @And("I select {string}")
+    public void iSelect(String menu) {
+        new MenuPage(driver).selectMenu(menu);
     }
 }

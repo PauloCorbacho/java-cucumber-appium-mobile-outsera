@@ -133,10 +133,6 @@
                             <projectName>Appium Cucumber Tests</projectName>
                             <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
                             <inputDirectory>${project.build.directory}/cucumber</inputDirectory>
-                            <jsonFiles>
-                                <param>**/*.json</param>
-                            </jsonFiles>
-                            <parallelTesting>false</parallelTesting>
                         </configuration>
                     </execution>
                 </executions>

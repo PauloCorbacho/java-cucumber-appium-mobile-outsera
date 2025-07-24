@@ -2,23 +2,33 @@ package config;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 
 public class AppConfig {
-    public static AndroidDriver getDriver() throws MalformedURLException {
-        UiAutomator2Options options = new UiAutomator2Options()
-                .setUdid("emulator-5554")
-                .setApp(System.getProperty("user.dir") + "/src/test/resources/app/ApiDemos-debug.apk")
-                .setAvd("smallphone")
-                .setAutoGrantPermissions(true);
-        AndroidDriver driver = new AndroidDriver(
-                new URL("http://127.0.0.1:4723/wd/hub"),
-                options
-        );
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    private static AndroidDriver driver;
+
+    public static AndroidDriver getDriver() {
+        if (driver == null) {
+            try {
+                UiAutomator2Options options = new UiAutomator2Options()
+                        .setDeviceName("emulator-5554")
+                        .setAppPackage("com.example.app")
+                        .setAppActivity(".LoginActivity")
+                        .setAutomationName("UiAutomator2")
+                        .setNoReset(true);
+
+                driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to initialize driver", e);
+            }
+        }
         return driver;
+    }
+
+    public static void closeDriver() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
     }
 }

@@ -3,4 +3,4 @@ Feature: Navigation and validation
     Given I open the ApiDemos app
     When I navigate to "Accessibility" menu
     And I select "Accessibility Node Querying"
-    Then I should see text "Take out the tMenuPagerash" on screen
+    Then I should see text "Take out the Menu Page" on screen
