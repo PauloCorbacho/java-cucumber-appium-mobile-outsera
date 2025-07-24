@@ -3,16 +3,27 @@ Feature: Application Login
   I want to log in
   So I can access restricted areas
 
-  Scenario: Login with valid credentials
+  Scenario Outline: Login with credentials
     Given I am on the login screen
-    When I enter a valid username
-    And I enter a valid password
+    When I enter username "<username>"
+    And I enter password "<password>"
     And I tap the login button
-    Then I should see the home screen
+    Then I should see "<expected_result>"
 
-  Scenario: Login with invalid credentials
+    Examples: Valid and Invalid Combinations
+      | username      | password       | expected_result    |
+      | valid_user    | validPass123   | home screen        |
+      | invalid_user  | any_password   | error message      |
+      | valid_user    | invalidPass    | error message      |
+      | ${EMPTY}      | validPass123   | error message      |
+      | valid_user    | ${EMPTY}       | error message      |
+      | valid_user    | short          | error message      |
+      | valid_user    | wrong_case     | error message      |
+      | valid_user    | with spaces    | error message      |
+
+  Scenario: Login with expired password
     Given I am on the login screen
-    When I enter an invalid username
-    And I enter an invalid password
+    When I enter username "valid_user"
+    And I enter password "expiredPass123"
     And I tap the login button
-    Then I should see an error message
+    Then I should see "password expired message"

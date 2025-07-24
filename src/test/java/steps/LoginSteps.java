@@ -1,6 +1,5 @@
 package steps;
 
-import config.AppConfig;
 import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.java.en.*;
 import pages.LoginPage;
@@ -16,24 +15,14 @@ public class LoginSteps {
         loginPage = new LoginPage(driver);
     }
 
-    @When("I enter a valid username")
-    public void iEnterAValidUsername() {
-        loginPage.enterUsername("valid_user");
+    @When("I enter username {string}")
+    public void iEnterUsername(String username) {
+        loginPage.enterUsername(username);
     }
 
-    @When("I enter a valid password")
-    public void iEnterAValidPassword() {
-        loginPage.enterPassword("validPass123");
-    }
-
-    @When("I enter an invalid username")
-    public void iEnterAnInvalidUsername() {
-        loginPage.enterUsername("invalid_user");
-    }
-
-    @When("I enter an invalid password")
-    public void iEnterAnInvalidPassword() {
-        loginPage.enterPassword("wrongPass");
+    @When("I enter password {string}")
+    public void iEnterPassword(String password) {
+        loginPage.enterPassword(password);
     }
 
     @When("I tap the login button")
@@ -41,13 +30,21 @@ public class LoginSteps {
         loginPage.tapLoginButton();
     }
 
-    @Then("I should see the home screen")
-    public void iShouldSeeTheHomeScreen() {
-        assertTrue(loginPage.isHomeScreenDisplayed());
-    }
-
-    @Then("I should see an error message")
-    public void iShouldSeeAnErrorMessage() {
-        assertTrue(loginPage.isErrorMessageDisplayed());
+    @Then("I should see {string}")
+    public void iShouldSee(String expectedResult) {
+        switch(expectedResult.toLowerCase()) {
+            case "home screen":
+                assertTrue("Home screen not displayed", loginPage.isHomeScreenDisplayed());
+                break;
+            case "error message":
+                assertTrue("Error message not displayed", loginPage.isErrorMessageDisplayed());
+                break;
+            case "password expired message":
+                assertTrue("Password expired message not displayed",
+                        loginPage.isPasswordExpiredMessageDisplayed());
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown expected result: " + expectedResult);
+        }
     }
 }
